@@ -31,7 +31,7 @@ public class SettingsController: Controller {
         }
         
         router.get("settings", DbCoreIdentifier.parameter) { (req) -> Future<Response> in
-            let id = try req.parameter(DbCoreIdentifier.self)
+            let id = try req.parameters.next(DbCoreIdentifier.self)
             return try Setting.query(on: req).filter(\Setting.id == id).first().flatMap(to: Response.self) { setting in
                 guard let setting = setting else {
                     throw ErrorsCore.HTTPError.notFound
@@ -60,7 +60,7 @@ public class SettingsController: Controller {
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
                 }
-                let id = try req.parameter(DbCoreIdentifier.self)
+                let id = try req.parameters.next(DbCoreIdentifier.self)
                 return try req.content.decode(Setting.self).flatMap(to: Setting.self) { updatedSetting in
                     return try Setting.query(on: req).filter(\Setting.id == id).first().flatMap(to: Setting.self) { setting in
                         guard let setting = setting else {
@@ -78,7 +78,7 @@ public class SettingsController: Controller {
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
                 }
-                let id = try req.parameter(DbCoreIdentifier.self)
+                let id = try req.parameters.next(DbCoreIdentifier.self)
                 return try Setting.query(on: req).filter(\Setting.id == id).delete().asResponse(to: req)
             }
         }
