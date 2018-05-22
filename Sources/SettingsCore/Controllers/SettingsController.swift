@@ -45,7 +45,7 @@ public class SettingsController: Controller {
         }
         
         router.post("settings") { (req) -> Future<Response> in
-            return try req.me.isAdmin().flatMap(to: Response.self) { admin in
+            return try req.me.isSystemAdmin().flatMap(to: Response.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
                 }
@@ -56,7 +56,7 @@ public class SettingsController: Controller {
         }
         
         router.put("settings", DbCoreIdentifier.parameter) { (req) -> Future<Setting> in
-            return try req.me.isAdmin().flatMap(to: Setting.self) { admin in
+            return try req.me.isSystemAdmin().flatMap(to: Setting.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
                 }
@@ -74,7 +74,7 @@ public class SettingsController: Controller {
         }
         
         router.delete("settings", DbCoreIdentifier.parameter) { (req) -> Future<Response> in
-            return try req.me.isAdmin().flatMap(to: Response.self) { admin in
+            return try req.me.isSystemAdmin().flatMap(to: Response.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
                 }
