@@ -7,9 +7,9 @@ let package = Package(
         .library(name: "SettingsCore", targets: ["SettingsCore"])
     ],
     dependencies: [
-        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0-rc.2"),
-        .package(url: "https://github.com/vapor/fluent.git", from: "3.0.0-rc.2"),
-        .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0-rc.2"),
+        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
+        .package(url: "https://github.com/vapor/fluent.git", from: "3.0.0"),
+        .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0-rc.4"),
         .package(url: "https://github.com/LiveUI/DbCore.git", .branch("master")),
         .package(url: "https://github.com/LiveUI/ApiCore.git", .branch("master")),
         .package(url: "https://github.com/LiveUI/ErrorsCore.git", .branch("master")),
