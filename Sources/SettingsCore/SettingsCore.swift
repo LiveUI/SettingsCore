@@ -7,7 +7,6 @@
 
 import Foundation
 import ApiCore
-import DbCore
 import Vapor
 
 
@@ -26,7 +25,7 @@ public class SettingsCore {
     public static func configure(_ config: inout Config, _ env: inout Vapor.Environment, _ services: inout Services) throws {
         ApiAuthMiddleware.allowedGetUri.append("/settings")
         
-        DbCore.add(model: Setting.self, database: .db)
+        ApiCoreBase.add(model: Setting.self, database: .db)
     }
     
 }

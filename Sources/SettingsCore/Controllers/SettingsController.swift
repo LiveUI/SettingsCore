@@ -8,7 +8,6 @@
 import Foundation
 import Vapor
 import ApiCore
-import DbCore
 import ErrorsCore
 import FluentPostgreSQL
 
@@ -30,8 +29,8 @@ public class SettingsController: Controller {
             }
         }
         
-        router.get("settings", DbCoreIdentifier.parameter) { (req) -> Future<Response> in
-            let id = try req.parameters.next(DbCoreIdentifier.self)
+        router.get("settings", DbIdentifier.parameter) { (req) -> Future<Response> in
+            let id = try req.parameters.next(DbIdentifier.self)
             return Setting.query(on: req).filter(\Setting.id == id).first().flatMap(to: Response.self) { setting in
                 guard let setting = setting else {
                     throw ErrorsCore.HTTPError.notFound
@@ -55,12 +54,12 @@ public class SettingsController: Controller {
             }
         }
         
-        router.put("settings", DbCoreIdentifier.parameter) { (req) -> Future<Setting> in
+        router.put("settings", DbIdentifier.parameter) { (req) -> Future<Setting> in
             return try req.me.isSystemAdmin().flatMap(to: Setting.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
                 }
-                let id = try req.parameters.next(DbCoreIdentifier.self)
+                let id = try req.parameters.next(DbIdentifier.self)
                 return try req.content.decode(Setting.self).flatMap(to: Setting.self) { updatedSetting in
                     return Setting.query(on: req).filter(\Setting.id == id).first().flatMap(to: Setting.self) { setting in
                         guard let setting = setting else {
@@ -73,12 +72,12 @@ public class SettingsController: Controller {
             }
         }
         
-        router.delete("settings", DbCoreIdentifier.parameter) { (req) -> Future<Response> in
+        router.delete("settings", DbIdentifier.parameter) { (req) -> Future<Response> in
             return try req.me.isSystemAdmin().flatMap(to: Response.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
                 }
-                let id = try req.parameters.next(DbCoreIdentifier.self)
+                let id = try req.parameters.next(DbIdentifier.self)
                 return try Setting.query(on: req).filter(\Setting.id == id).delete().asResponse(to: req)
             }
         }

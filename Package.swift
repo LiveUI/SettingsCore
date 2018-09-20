@@ -9,8 +9,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
         .package(url: "https://github.com/vapor/fluent.git", from: "3.0.0"),
-        .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0-rc.4"),
-        .package(url: "https://github.com/LiveUI/DbCore.git", .branch("master")),
+        .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0"),
         .package(url: "https://github.com/LiveUI/ApiCore.git", .branch("master")),
         .package(url: "https://github.com/LiveUI/ErrorsCore.git", .branch("master")),
         .package(url: "https://github.com/LiveUI/VaporTestTools.git", from: "0.1.5"),
@@ -19,7 +18,6 @@ let package = Package(
     targets: [
         .target(name: "SettingsCore", dependencies: [
             "Vapor",
-            "DbCore",
             "ApiCore",
             "Fluent",
             "FluentPostgreSQL",
