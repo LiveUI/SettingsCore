@@ -14,7 +14,7 @@ import FluentPostgreSQL
 
 public class SettingsController: Controller {
     
-    public static func boot(router: Router) throws {
+    public static func boot(router: Router, secure: Router, debug: Router) throws {
         router.get("settings") { (req) -> Future<Response> in
             return Setting.query(on: req).all().flatMap(to: Response.self) { settings in
                 if req.query.plain == true  {
@@ -43,7 +43,7 @@ public class SettingsController: Controller {
             }
         }
         
-        router.post("settings") { (req) -> Future<Response> in
+        secure.post("settings") { (req) -> Future<Response> in
             return try req.me.isSystemAdmin().flatMap(to: Response.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
@@ -54,7 +54,7 @@ public class SettingsController: Controller {
             }
         }
         
-        router.put("settings", DbIdentifier.parameter) { (req) -> Future<Setting> in
+        secure.put("settings", DbIdentifier.parameter) { (req) -> Future<Setting> in
             return try req.me.isSystemAdmin().flatMap(to: Setting.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
@@ -72,7 +72,7 @@ public class SettingsController: Controller {
             }
         }
         
-        router.delete("settings", DbIdentifier.parameter) { (req) -> Future<Response> in
+        secure.delete("settings", DbIdentifier.parameter) { (req) -> Future<Response> in
             return try req.me.isSystemAdmin().flatMap(to: Response.self) { admin in
                 guard admin else {
                     throw ErrorsCore.HTTPError.notAuthorizedAsAdmin
