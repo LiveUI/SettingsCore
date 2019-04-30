@@ -39,7 +39,7 @@ extension Setting: Migration {
     public static func prepare(on connection: ApiCoreConnection) -> Future<Void> {
         return Database.create(self, on: connection) { (schema) in
             schema.field(for: \.id, isIdentifier: true)
-            schema.field(for: \.name)
+            schema.field(for: \.name, type: .varchar(64), .unique())
             schema.field(for: \.config, type: .text)
         }
     }
